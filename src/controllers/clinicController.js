@@ -1,21 +1,10 @@
-const Clinic = require('../models/Clinic');
+const Clinic = require('../models/Clinic'); // Placeholder model
 
-// Get all clinics
-exports.getClinics = async (req, res) => {
+exports.getClinics = async (req, res, next) => {
   try {
     const clinics = await Clinic.findAll();
-    res.json(clinics);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving clinics', error: err });
-  }
-};
-
-// Create a new clinic
-exports.createClinic = async (req, res) => {
-  try {
-    const clinic = await Clinic.create(req.body);
-    res.status(201).json(clinic);
-  } catch (err) {
-    res.status(500).json({ message: 'Error creating clinic', error: err });
+    res.status(200).json({ clinics });
+  } catch (error) {
+    next(error);
   }
 };

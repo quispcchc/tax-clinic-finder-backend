@@ -1,16 +1,24 @@
-// server.js
-const express = require('express');
 const dotenv = require('dotenv');
-const app = require('./src/app');
-const PORT = process.env.PORT || 3000;
-const sequelize = require('./src/config/database');
-const User = require('./src/models/User');  // Adjust model import
-
 dotenv.config();
 
-sequelize.sync({ force: false }).then(() => {  // Don't use force unless necessary
-  console.log('Database synced');
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}).catch((err) => console.error('Database sync failed:', err));
+const app = require('./src/app');
+const sequelize = require('./src/config/database');
+const { logger } = require('./src/config/logger');
+
+const PORT = process.env.PORT || 3000;
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    logger.info('Database connected successfully');
+    await sequelize.sync({ alter: true });
+    logger.info('Database synced');
+    
+    app.listen(PORT, () => {
+      logger.info(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    logger.error('Error starting server:', error);
+    process.exit(1);
+  }
+})();

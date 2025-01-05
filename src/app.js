@@ -1,34 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-const authMiddleware = require('./middleware/auth');
-const clinicRoutes = require('./routes/clinicRoutes');
-const sequelize = require('./config/database');
-const authRoutes = require('./routes/auth');
+const routes = require('./routes');
+const { errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
 
-// Middleware
+// Global middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/clinics', authMiddleware, clinicRoutes); // Protected routes
-app.use('/api/auth', authRoutes); // Public routes
+app.use('/api', routes);
 
-// Test and Sync Database Connection
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Database connected');
-    return sequelize.sync(); // Sync models with the database
-  })
-  .then(() => console.log('Database synced'))
-  .catch((err) => console.error('Database connection failed:', err));
-
-// Centralized Error Handling Middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({ message: err.message || 'Internal Server Error' });
-});
+// Error handling middleware
+app.use(errorHandler);
 
 module.exports = app;

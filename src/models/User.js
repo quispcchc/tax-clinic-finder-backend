@@ -16,9 +16,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
+    validate: { isEmail: true },
   },
   password: {
     type: DataTypes.STRING,
@@ -28,9 +26,17 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     defaultValue: 'user',
   },
+  resetToken: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  resetTokenExpiry: {
+    type: DataTypes.DATE,
+    allowNull: true
+  }
 }, {
-  tableName: 'Users', // Ensures Sequelize uses the correct table
-  timestamps: true,  // Enable automatic createdAt and updatedAt management
+  tableName: 'Users',
+  timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
 });
