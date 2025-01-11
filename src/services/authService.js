@@ -2,9 +2,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/User');
-const { logger } = require('../config/logger'); 
 const nodemailer = require('../config/nodemailer');
 const { Sequelize } = require('sequelize');
+const Clinic = require('../models/Clinic');
 
 exports.register = async ({ username, email, password, role }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -89,7 +89,25 @@ exports.resetPasswordWithToken = async (token, password) => {
 
     return { success: true, message: 'Password has been reset' };
   } catch (error) {
-    logger.error(`ERROR is:${error.message}`);
     throw new Error('Error resetting password');
+  }
+};
+
+exports.storeClinicData = async ({ clinic_name, clinic_address, appointments_available, language_requirements, appointment_type, population_eligibility, required_documents }) => {
+
+  try {
+    const newClinic = await Clinic.create({
+      clinic_name,
+      clinic_address,
+      appointments_available,
+      language_requirements,
+      appointment_type,
+      population_eligibility,
+      required_documents
+    });
+
+    return { message: 'Clinic data inserted successfully', clinic: newClinic };
+  } catch (error) {
+    throw new Error('Error storing clinic data');
   }
 };

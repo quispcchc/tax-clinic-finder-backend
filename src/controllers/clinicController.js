@@ -1,9 +1,11 @@
-const Clinic = require('../models/Clinic'); // Placeholder model
+const { logger } = require('../config/logger');
+const authService = require('../services/authService');
 
-exports.getClinics = async (req, res, next) => {
+exports.storeClinicData = async (req, res, next) => {
   try {
-    const clinics = await Clinic.findAll();
-    res.status(200).json({ clinics });
+    logger.info(`store clinic data:${req}`)
+    const result = await authService.storeClinicData(req.body);
+    res.status(201).json({ result });
   } catch (error) {
     next(error);
   }

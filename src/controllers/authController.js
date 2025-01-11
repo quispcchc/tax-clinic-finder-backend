@@ -18,7 +18,6 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// Reset Password Request - Sends a reset email
 exports.resetPassword = async (req, res, next) => {
     try {
       const result = await authService.resetPassword(req.body.email);
@@ -28,7 +27,6 @@ exports.resetPassword = async (req, res, next) => {
     }
 };
   
-// Reset Password with Token - Handles resetting password using the token
 exports.resetPasswordWithToken = async (req, res, next) => {
     try {
       const result = await authService.resetPasswordWithToken(req.params.token, req.body.password);

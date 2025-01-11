@@ -1,10 +1,10 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
-const clinicRoutes = require('./clinicRoutes'); // Placeholder for future API
+const clinicRoutes = require('./clinicRoutes');
 
 const router = express.Router();
 
 router.use('/auth', authRoutes);
-router.use('/clinics', clinicRoutes); // Placeholder for future routes
+router.use('/clinics', clinicRoutes);
 
 module.exports = router;
