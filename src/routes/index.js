@@ -5,6 +5,6 @@ const clinicRoutes = require('./clinicRoutes');
 const router = express.Router();
 
 router.use('/auth', authRoutes);
-router.use('/clinics', clinicRoutes);
+router.use('/tax-clinics', clinicRoutes);
 
 module.exports = router;
