@@ -11,12 +11,24 @@ const Clinic = sequelize.define('Clinic', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  clinic_address: {
+  street: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  state: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  postalcode: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   appointments_available: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   language_requirements: {
@@ -34,6 +46,10 @@ const Clinic = sequelize.define('Clinic', {
   required_documents: {
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  website: {
+    type: DataTypes.STRING,
+    allowNull: true,    
   }
 }, {
   tableName: 'tax_clinics',

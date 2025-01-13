@@ -93,17 +93,21 @@ exports.resetPasswordWithToken = async (token, password) => {
   }
 };
 
-exports.storeClinicData = async ({ clinic_name, clinic_address, appointments_available, language_requirements, appointment_type, population_eligibility, required_documents }) => {
+exports.storeClinicData = async ({ clinic_name, street, city, state, postalcode, appointments_available, language_requirements, appointment_type, population_eligibility, required_documents, website }) => {
 
   try {
     const newClinic = await Clinic.create({
       clinic_name,
-      clinic_address,
+      street,
+      city,
+      state,
+      postalcode,
       appointments_available,
       language_requirements,
       appointment_type,
       population_eligibility,
-      required_documents
+      required_documents,
+      website
     });
 
     return { message: 'Clinic data inserted successfully', clinic: newClinic };
