@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const nodemailer = require('../config/nodemailer');
 const { Sequelize } = require('sequelize');
-const Clinic = require('../models/Clinic');
 
 exports.register = async ({ username, email, password, role }) => {
   const hashedPassword = await bcrypt.hash(password, 10);

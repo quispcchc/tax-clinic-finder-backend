@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+require('./src/models/associations');
 const app = require('./src/app');
 const sequelize = require('./src/config/database');
 const { logger } = require('./src/config/logger');
@@ -12,7 +13,6 @@ const PORT = process.env.PORT || 3000;
     await sequelize.authenticate();
     logger.info('Database connected successfully');
     await sequelize.sync({ alter: true });
-    logger.info('Database synced');
     
     app.listen(PORT, () => {
       logger.info(`Server running on http://localhost:${PORT}`);
