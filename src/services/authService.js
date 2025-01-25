@@ -92,26 +92,3 @@ exports.resetPasswordWithToken = async (token, password) => {
     throw new Error('Error resetting password');
   }
 };
-
-exports.storeClinicData = async ({ clinic_name, street, city, state, postalcode, appointments_available, language_requirements, appointment_type, population_eligibility, required_documents, website }) => {
-
-  try {
-    const newClinic = await Clinic.create({
-      clinic_name,
-      street,
-      city,
-      state,
-      postalcode,
-      appointments_available,
-      language_requirements,
-      appointment_type,
-      population_eligibility,
-      required_documents,
-      website
-    });
-
-    return { message: 'Clinic data inserted successfully', clinic: newClinic };
-  } catch (error) {
-    throw new Error('Error storing clinic data');
-  }
-};
