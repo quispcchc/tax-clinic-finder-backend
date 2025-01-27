@@ -42,6 +42,10 @@ TaxClinic.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    alternate_contact_title : {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     alternate_contact_email: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -102,7 +106,11 @@ TaxClinic.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    special_services: {
+    eligibility_webpage_available: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    eligibility_criteria_webpage: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
