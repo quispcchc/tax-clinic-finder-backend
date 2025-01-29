@@ -19,7 +19,7 @@ exports.login = async ({ email, password }) => {
   if (!isMatch) throw new Error('Invalid credentials');
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  return { message: 'Login successful', token, user: { id: user.id, email: user.email } };
+  return { message: 'Login successful', token, id: user.id, userName: user.username, email: user.email, role: user.role};
 };
 
 exports.resetPassword = async (email) => {
