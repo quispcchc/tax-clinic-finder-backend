@@ -30,6 +30,10 @@ TaxClinic.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    appointment_available: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     listed_on_cra: {
       type: DataTypes.STRING,
       allowNull: false,
