@@ -1,6 +1,7 @@
 const TaxClinic = require("../models/TaxClinic");
 const TaxClinicLocation = require("../models/TaxClinicLocation");
 const { logger } = require("../config/logger");
+const User = require("../models/User");
 
 exports.getTaxClinics = async () => {
   try {
@@ -37,5 +38,14 @@ exports.updateAppointmentAvailability = async (
     return clinic;
   } catch (error) {
     throw new Error("Error updating appointment availability");
+  }
+};
+
+exports.getUsers = async () => {
+  try {
+    const users = await User.findAll();
+    return users;
+  } catch (error) {
+    throw new Error("Error fetching users from the database");
   }
 };
