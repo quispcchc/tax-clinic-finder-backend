@@ -43,3 +43,35 @@ exports.getUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.createUser = async (req, res, next) => {
+  try {
+    const user = await clinicService.createUser(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    logger.error("Error in createUser controller:", error);
+    next(error);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedUser = await clinicService.updateUser(id, req.body);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    logger.error("Error in updateUser controller:", error);
+    next(error);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await clinicService.deleteUser(id);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    logger.error("Error in deleteUser controller:", error);
+    next(error);
+  }
+};

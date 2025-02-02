@@ -5,12 +5,15 @@ const User = require("../models/User");
 const nodemailer = require("../config/nodemailer");
 const { Sequelize } = require("sequelize");
 
-exports.register = async ({ username, email, password, role }) => {
+exports.register = async ({ firstname, lastname, username, email, password, designation, role }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({
+    firstname,
+    lastname,
     username,
     email,
     password: hashedPassword,
+    designation,
     role,
   });
   return { message: "User registered successfully", user: newUser };
@@ -30,8 +33,11 @@ exports.login = async ({ email, password }) => {
     message: "Login successful",
     token,
     id: user.id,
+    firstname: user.firstname,
+    lastname: user.lastname,
     userName: user.username,
     email: user.email,
+    designation: user.designation,
     role: user.role,
   };
 };

@@ -7,6 +7,16 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true,
   },
+  firstname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  lastname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -22,9 +32,14 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  designation: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   role: {
     type: DataTypes.STRING,
     defaultValue: 'user',
+    allowNull: false,
   },
   resetToken: {
     type: DataTypes.STRING,
