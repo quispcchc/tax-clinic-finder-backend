@@ -11,6 +11,38 @@ exports.getTaxClinics = async (req, res, next) => {
   }
 };
 
+exports.createTaxClinic = async (req, res, next) => {
+  try {
+    const clinic = await clinicService.createTaxClinic(req.body);
+    res.status(201).json(clinic);
+  } catch (error) {
+    logger.error("Error in createTaxClinic controller:", error);
+    next(error);
+  }
+};
+
+exports.updateTaxClinic = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedClinic = await clinicService.updateTaxClinic(id, req.body);
+    res.status(200).json(updatedClinic);
+  } catch (error) {
+    logger.error("Error in updateTaxClinic controller:", error);
+    next(error);
+  }
+};
+
+exports.deleteTaxClinic = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await clinicService.deleteTaxClinic(id);
+    res.status(200).json({ message: "clinic deleted successfully" });
+  } catch (error) {
+    logger.error("Error in deleteTaxClinic controller:", error);
+    next(error);
+  }
+};
+
 exports.updateAppointmentAvailability = async (req, res, next) => {
   const { id, appointmentAvailability } = req.body;
 
