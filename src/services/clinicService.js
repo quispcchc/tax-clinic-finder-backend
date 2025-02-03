@@ -193,7 +193,9 @@ exports.updateAppointmentAvailability = async (
 
 exports.getUsers = async () => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: { exclude: ['password'] },
+    });
     return users;
   } catch (error) {
     throw new Error("Error fetching users from the database");
@@ -216,13 +218,17 @@ exports.createUser = async (userData) => {
 
     return newUser;
   } catch (error) {
-    throw new Error("Error creating user in the database");
+    logger.error(`error in clinic service, ${error}` );
+    throw new Error("Error creating user in the database",error);
   }
 };
 
 exports.updateUser = async (id, userData) => {
   try {
-    const user = await User.findByPk(id);
+
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ['password'] },
+    });
     if (!user) {
       throw new Error("User not found");
     }
