@@ -204,8 +204,15 @@ exports.getUsers = async () => {
 
 exports.createUser = async (userData) => {
   try {
+    const existingUserEmail = await User.findOne({ where: { email: userData.email } });
+    if (existingUserEmail) {
+      throw new Error('Email already exists');
+    }
+    const existingUsername = await User.findOne({ where: { username: userData.username } });
+    if (existingUsername) {
+      throw new Error('Username already exists');
+    }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    logger.info(`userDatais:${JSON.stringify(userData)}`)
     const newUser = await User.create({
       firstname: userData.firstname,
       lastname: userData.lastname,
@@ -218,8 +225,8 @@ exports.createUser = async (userData) => {
 
     return newUser;
   } catch (error) {
-    logger.error(`error in clinic service, ${error}` );
-    throw new Error("Error creating user in the database",error);
+    logger.error(`Error in user service: ${error.message}`);
+    throw new Error(error.message);
   }
 };
 
@@ -249,7 +256,7 @@ exports.updateUser = async (id, userData) => {
 
     return user;
   } catch (error) {
-    throw new Error("Error updating user in the database");
+    throw new Error(ErrorEvent.message);
   }
 };
 
