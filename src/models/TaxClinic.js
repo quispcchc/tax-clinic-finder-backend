@@ -14,9 +14,13 @@ TaxClinic.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    organization_contact: {
+    organisation_website: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    organisation_email: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     contact_person_name: {
       type: DataTypes.STRING,
@@ -67,7 +71,7 @@ TaxClinic.init(
       allowNull: false,
     },
     wheelchair_accessible: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     serve_people_from: {
@@ -82,12 +86,20 @@ TaxClinic.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    hours_of_operation: {
+    date_and_time_of_operation : {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    hours_of_operation: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    days_of_operation: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     year_round_service: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     population_served: {
@@ -111,7 +123,7 @@ TaxClinic.init(
       allowNull: false,
     },
     eligibility_webpage_available: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     eligibility_criteria_webpage: {

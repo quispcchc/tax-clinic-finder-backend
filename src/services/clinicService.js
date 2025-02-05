@@ -3,6 +3,7 @@ const TaxClinicLocation = require("../models/TaxClinicLocation");
 const { logger } = require("../config/logger");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { cli } = require("winston/lib/winston/config");
 
 exports.getTaxClinics = async () => {
   try {
@@ -22,65 +23,71 @@ exports.getTaxClinics = async () => {
   }
 };
 
+const formatArrayToString = (value) => (Array.isArray(value) ? value.join(', ') : value);
+
 exports.createTaxClinic = async (clinicData) => {
   try {
-
-    const newClient = await TaxClinic.create({
+    const newClinic = await TaxClinic.create({
       organization_name: clinicData.organizationName,
-        organization_contact: clinicData.organizationContact,
-        contact_person_name: clinicData.contactPersonName,
-        contact_person_title: clinicData.contactPersonTitle,
-        contact_email: clinicData.contactEmail,
-        appointment_available: clinicData.appointmentAvailability,
-        listed_on_cra: clinicData.listedOnCra,
-        visible_on_nceo: clinicData.visibleOnNceo,
-        alternate_contact_name: clinicData.alternateContactName,
-        alternate_contact_title: clinicData.alternateContactTitle,
-        alternate_contact_email: clinicData.alternateContactEmail,
-        alternate_contact_phone: clinicData.alternateContactPhone,
-        public_info: clinicData.publicInfo,
-        clinic_types: clinicData.clinicTypes,
-        wheelchair_accessible: clinicData.wheelchairAccessible,
-        serve_people_from: clinicData.servePeopleFrom,
-        catchment_area: clinicData.catchmentArea,
-        months_offered: clinicData.monthsOffered,
-        hours_of_operation: clinicData.hoursOfOperation,
-        year_round_service: clinicData.yearRoundService,
-        population_served: clinicData.populationServed,
-        service_languages: clinicData.serviceLanguages,
-        tax_years_prepared: clinicData.taxYearsPrepared,
-        residency_tax_year: clinicData.residencyTaxYear,
-        serve_people: clinicData.servePeople,
-        eligibility_webpage_available: clinicData.eligibilityWebpageAvailable,
-        eligibility_criteria_webpage: clinicData.eligibilityCriteriaWebpage,
-        booking_process: clinicData.bookingProcess,
-        booking_days_hours: clinicData.bookingDaysHours,
-        booking_contact_phone: clinicData.bookingContactPhone,
-        booking_contact_email: clinicData.bookingContactEmail,
-        online_booking_link: clinicData.onlineBookingLink,
-        useful_online_booking: clinicData.usefulOnlineBooking,
-        required_documents: clinicData.requiredDocuments,
-        help_with_missing_docs: clinicData.helpWithMissingDocs,
-        tax_preparers: clinicData.taxPreparers,
-        tax_filers: clinicData.taxFilers,
-        volunteer_roles: clinicData.volunteerRoles,
-        clinic_capacity: clinicData.clinicCapacity,
-        additional_support: clinicData.additionalSupport,
-        comments: clinicData.comments,
-        locations: clinicData.locations,
-      },
-      {
-        include: [
-          {
-            model: TaxClinicLocation,
-            as: "locations",
-          },
-        ],
-      }
-    );
-    return newClient;
+      organisation_website: clinicData.organisationWebsite,
+      organisation_email: clinicData.organisationalEmail,
+      contact_person_name: clinicData.contactPersonName,
+      contact_person_title: clinicData.contactPersonTitle,
+      contact_email: clinicData.contactEmail,
+      appointment_available: clinicData.appointmentAvailability,
+      listed_on_cra: clinicData.listedOnCra,
+      visible_on_nceo: clinicData.visibleOnNceo,
+      alternate_contact_name: clinicData.alternateContactName,
+      alternate_contact_title: clinicData.alternateContactTitle,
+      alternate_contact_email: clinicData.alternateContactEmail,
+      alternate_contact_phone: clinicData.alternateContactPhone,
+      public_info: clinicData.publicInfo,
+      clinic_types: formatArrayToString(clinicData.clinicTypes),
+      wheelchair_accessible: clinicData.wheelchairAccessible,
+      serve_people_from: clinicData.servePeopleFrom,
+      catchment_area: clinicData.catchmentArea,
+      months_offered: formatArrayToString(clinicData.monthsOffered),
+      hours_of_operation: formatArrayToString(clinicData.hoursOfOperation),
+      days_of_operation: formatArrayToString(clinicData.daysOfOperation),
+      year_round_service: clinicData.yearRoundService,
+      population_served: formatArrayToString(clinicData.populationServed),
+      service_languages: formatArrayToString(clinicData.serviceLanguages),
+      tax_years_prepared: formatArrayToString(clinicData.taxYearsPrepared),
+      residency_tax_year: formatArrayToString(clinicData.residencyTaxYear),
+      serve_people: formatArrayToString(clinicData.servePeople),
+      eligibility_webpage_available: clinicData.eligibilityWebpageAvailable,
+      eligibility_criteria_webpage: clinicData.eligibilityCriteriaWebpage,
+      booking_process: formatArrayToString(clinicData.bookingProcess),
+      booking_days_hours: clinicData.bookingDaysHours,
+      booking_contact_phone: clinicData.bookingContactPhone,
+      booking_contact_email: clinicData.bookingContactEmail,
+      online_booking_link: clinicData.onlineBookingLink,
+      useful_online_booking: clinicData.usefulOnlineBooking,
+      required_documents: clinicData.requiredDocuments,
+      help_with_missing_docs: formatArrayToString(clinicData.helpWithMissingDocs),
+      tax_preparers: formatArrayToString(clinicData.taxPreparers),
+      tax_filers: formatArrayToString(clinicData.taxFilers),
+      volunteer_roles: formatArrayToString(clinicData.volunteerRoles),
+      clinic_capacity: clinicData.clinicCapacity,
+      additional_support: formatArrayToString(clinicData.additionalSupport),
+      comments: clinicData.comments,
+    });
+
+    if (clinicData.locations && clinicData.locations.length > 0) {
+      const locations = clinicData.locations.map((loc) => ({
+        tax_clinic_id: newClinic.id,
+        street: loc.street,
+        city: loc.city,
+        state: loc.state,
+        postal_code: loc.postalCode,
+      }));
+      await TaxClinicLocation.bulkCreate(locations);
+    }
+
+    return newClinic;
   } catch (error) {
-    throw new Error("Error creating client in the database");
+    console.error("Error creating tax clinic:", error);
+    throw new Error("Error creating clinic in the database");
   }
 };
 
