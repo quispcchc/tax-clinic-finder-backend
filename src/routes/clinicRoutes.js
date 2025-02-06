@@ -17,7 +17,7 @@ router.get("/", getTaxClinics);
 router.post("/create-clinic", createTaxClinic);
 router.put("/:id", updateTaxClinic);
 router.delete("/:id", deleteTaxClinic);
-router.put("/:id", updateAppointmentAvailability);
+router.put("/update-availability/:id", updateAppointmentAvailability);
 router.get("/users", getUsers);
 router.post("/create-user", createUser);
 router.put("/users/:id", updateUser);
