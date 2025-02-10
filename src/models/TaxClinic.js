@@ -16,7 +16,7 @@ TaxClinic.init(
     },
     organisation_website: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     organisation_email: {
       type: DataTypes.STRING,
