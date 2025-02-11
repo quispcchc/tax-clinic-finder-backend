@@ -2,8 +2,10 @@ const TaxClinic = require("../models/TaxClinic");
 const TaxClinicLocation = require("../models/TaxClinicLocation");
 const { logger } = require("../config/logger");
 const User = require("../models/User");
+const Client = require("../models/Client");
 const bcrypt = require("bcrypt");
 const { cli } = require("winston/lib/winston/config");
+const { v4: uuidv4 } = require("uuid");
 
 exports.getTaxClinics = async () => {
   try {
@@ -279,5 +281,25 @@ exports.deleteUser = async (id) => {
     await user.destroy();
   } catch (error) {
     throw new Error("Error deleting user from the database");
+  }
+};
+
+exports.saveFilteredData = async (clientData) => {
+  try {
+    const isNewClient = true;
+
+    if (isNewClient) {
+      const newClientId = uuidv4();
+
+      const newClient = await Client.create({
+        client_id: newClientId,
+        ...clientData,
+      });
+
+      return newClient;
+    }
+  } catch (error) {
+    logger.error(`Error in client service: ${error.message}`);
+    throw new Error(error.message);
   }
 };

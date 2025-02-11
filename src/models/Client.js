@@ -8,7 +8,7 @@ const Client = sequelize.define('Client', {
     autoIncrement: true,
   },
   client_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   appointment_type: {

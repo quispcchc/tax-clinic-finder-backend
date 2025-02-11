@@ -107,3 +107,13 @@ exports.deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.saveFilteredData = async (req, res, next) => {
+  try {
+    const client = await clinicService.saveFilteredData(req.body);
+    res.status(201).json(client);
+  } catch (error) {
+    logger.error("Error in saveFilteredData controller:", error);
+    next(error);
+  }
+};
