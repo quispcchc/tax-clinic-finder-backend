@@ -11,6 +11,7 @@ const {
   updateUser,
   deleteUser,
   saveFilteredData,
+  exportClientLogs,
 } = require("../controllers/clinicController");
 const router = express.Router();
 
@@ -24,5 +25,6 @@ router.post("/create-user", createUser);
 router.put("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);
 router.post("/save-filters", saveFilteredData);
+router.get('/export-logs', exportClientLogs);
 
 module.exports = router;

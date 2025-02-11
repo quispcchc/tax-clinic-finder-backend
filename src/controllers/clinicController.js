@@ -117,3 +117,26 @@ exports.saveFilteredData = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.exportClientLogs =  async (req, res) => {
+  const { exportType, startDate, endDate } = req.query;
+
+  if (!exportType) {
+    return res.status(400).json({ error: 'Export type is required' });
+  }
+
+  try {
+
+    const clients = await clinicService.exportClientLogs(exportType, startDate, endDate);
+
+    if (clients.length === 0) {
+      return res.status(404).json({ message: 'No data found for the selected range' });
+    }
+
+    res.json(clients);
+  } catch (error) {
+    console.error('Error exporting client logs:', error);
+    res.status(500).json({ error: 'Failed to export client data. Please try again.' });
+  }
+};
+

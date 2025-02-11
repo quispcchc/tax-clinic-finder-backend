@@ -4,8 +4,8 @@ const { logger } = require("../config/logger");
 const User = require("../models/User");
 const Client = require("../models/Client");
 const bcrypt = require("bcrypt");
-const { cli } = require("winston/lib/winston/config");
 const { v4: uuidv4 } = require("uuid");
+const { Op } = require('sequelize');
 
 exports.getTaxClinics = async () => {
   try {
@@ -301,5 +301,27 @@ exports.saveFilteredData = async (clientData) => {
   } catch (error) {
     logger.error(`Error in client service: ${error.message}`);
     throw new Error(error.message);
+  }
+};
+
+exports.exportClientLogs = async (exportType, startDate, endDate) => {
+  try {
+    let whereCondition = {};
+
+    if (exportType === 'byDate' && startDate && endDate) {
+      whereCondition.created_date = {
+        [Op.between]: [startDate, endDate]
+      };
+    }
+
+    const clients = await Client.findAll({
+      where: whereCondition,
+      raw: true
+    });
+
+    return clients;
+  } catch (error) {
+    console.error('Error fetching client data:', error);
+    throw new Error('Failed to fetch client data');
   }
 };
