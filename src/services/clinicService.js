@@ -304,6 +304,39 @@ exports.saveFilteredData = async (clientData) => {
   }
 };
 
+exports.updateFilteredData = async (
+  clientId,
+  clientData
+) => {
+  try {
+    const clientDetails = await Client.findOne({ where: { client_id: clientId } });
+
+    if (!clientDetails) {
+      throw new Error("client id not found");
+    }
+    let updateData = {};
+
+    if (clientData.assigned_clinic !== undefined) {
+      updateData.assigned_clinic = clientData.assigned_clinic;
+    }
+    if (clientData.unassigned_clinic !== undefined) {
+      updateData.unassigned_clinic = clientData.unassigned_clinic;
+    }
+    if (Object.keys(updateData).length === 0) {
+      throw new Error("No valid fields to update");
+    }
+
+    await Client.update(updateData, { where: { client_id: clientId } });
+
+    const updatedClient = await Client.findOne({ where: { client_id: clientId } });
+
+    return updatedClient;
+  } catch (error) {
+    logger.error(`Error updating client data: ${error.message}`);
+    throw new Error("Error updating client details");
+  }
+};
+
 exports.exportClientLogs = async (exportType, startDate, endDate) => {
   try {
     let whereCondition = {};

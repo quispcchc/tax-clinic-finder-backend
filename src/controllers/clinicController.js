@@ -118,6 +118,17 @@ exports.saveFilteredData = async (req, res, next) => {
   }
 };
 
+exports.updateFilteredData = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updateFilteredData = await clinicService.updateFilteredData(id, req.body);
+    res.status(200).json(updateFilteredData);
+  } catch (error) {
+    logger.error("Error in updateFilteredData controller:", error);
+    next(error);
+  }
+};
+
 exports.exportClientLogs =  async (req, res) => {
   const { exportType, startDate, endDate } = req.query;
 
