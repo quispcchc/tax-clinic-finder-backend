@@ -289,7 +289,7 @@ exports.saveFilteredData = async (clientData) => {
     const isNewClient = true;
 
     if (isNewClient) {
-      const newClientId = uuidv4();
+      const newClientId = uuidv4().split("-")[0];
 
       const newClient = await Client.create({
         client_id: newClientId,
@@ -308,20 +308,24 @@ exports.exportClientLogs = async (exportType, startDate, endDate) => {
   try {
     let whereCondition = {};
 
-    if (exportType === 'byDate' && startDate && endDate) {
+    if (exportType === "byDate" && startDate && endDate) {
+
+      const start = new Date(`${startDate}T00:00:00.000Z`);
+      const end = new Date(`${endDate}T23:59:59.999Z`);
+
       whereCondition.created_date = {
-        [Op.between]: [startDate, endDate]
+        [Op.between]: [start, end],
       };
     }
 
     const clients = await Client.findAll({
       where: whereCondition,
-      raw: true
+      raw: true,
     });
 
     return clients;
   } catch (error) {
-    console.error('Error fetching client data:', error);
-    throw new Error('Failed to fetch client data');
+    console.error("Error fetching client data:", error);
+    throw new Error("Failed to fetch client data");
   }
 };
