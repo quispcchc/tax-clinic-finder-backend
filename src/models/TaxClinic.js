@@ -186,6 +186,10 @@ TaxClinic.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    postal_codes_serve: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   },
   {
     sequelize,
