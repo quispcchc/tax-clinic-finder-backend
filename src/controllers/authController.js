@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const { logger } = require("../config/logger");
 
 exports.register = async (req, res, next) => {
   try {
@@ -34,4 +35,17 @@ exports.resetPasswordWithToken = async (req, res, next) => {
     } catch (error) {
       next(error);
     }
+};
+
+exports.changePassword = async (req, res, next) => {
+  try {
+
+    const {userId} = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    const result = await authService.changePassword(userId, currentPassword, newPassword);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 };

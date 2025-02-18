@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const User = require("../models/User");
 const nodemailer = require("../config/nodemailer");
 const { Sequelize } = require("sequelize");
+const { logger } = require("../config/logger");
 
 exports.register = async ({ firstname, lastname, username, email, password, designation, role }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -108,5 +109,22 @@ exports.resetPasswordWithToken = async (token, password) => {
     return { success: true, message: "Password has been reset" };
   } catch (error) {
     throw new Error("Error resetting password");
+  }
+};
+
+exports.changePassword = async (userId, currentPassword, newPassword) => {
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) throw new Error("User not found");
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw new Error("Current password is incorrect");
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await user.update({ password: hashedPassword });
+
+    return { success: true, message: "Password changed successfully" };
+  } catch (error) {
+    throw new Error("Error changing password: " + error.message);
   }
 };
