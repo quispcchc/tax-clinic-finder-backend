@@ -186,8 +186,8 @@ TaxClinic.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    postal_codes_serve: {
-      type: DataTypes.TEXT,
+    catchment_boundaries: {
+      type: DataTypes.JSONB,
       allowNull: true,
     },
   },
