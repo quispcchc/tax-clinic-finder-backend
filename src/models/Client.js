@@ -23,10 +23,6 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  geographical_zone: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   days_of_operation: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -58,6 +54,10 @@ const Client = sequelize.define('Client', {
   special_cases: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  client_postal_code: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   clinics_listed: {
     type: DataTypes.TEXT,
