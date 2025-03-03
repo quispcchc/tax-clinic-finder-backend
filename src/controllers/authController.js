@@ -22,6 +22,9 @@ exports.login = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try {
       const result = await authService.resetPassword(req.body.email);
+      if (!result.success) {
+        return res.status(400).json(result);
+      }
       res.status(200).json(result);
     } catch (error) {
       next(error);

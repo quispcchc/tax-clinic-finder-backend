@@ -48,7 +48,7 @@ exports.resetPassword = async (email) => {
     const user = await User.findOne({ where: { email: email } });
 
     if (!user) {
-      throw new Error("User not found");
+      return { success: false, message: "No account found with this email." };
     }
 
     const resetToken = crypto.randomBytes(20).toString("hex");
@@ -80,9 +80,9 @@ exports.resetPassword = async (email) => {
       }
     });
 
-    return { success: true, message: "Password reset email sent" };
+    return { success: true, message: "A password reset link has been sent to your email."};
   } catch (error) {
-    throw new Error("Error processing password reset request");
+    return { success: false, message: "Failed to process password reset request." };
   }
 };
 
