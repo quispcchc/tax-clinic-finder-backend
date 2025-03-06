@@ -49,6 +49,7 @@ exports.createTaxClinic = async (clinicData) => {
       serve_people_from: clinicData.servePeopleFrom,
       catchment_area: clinicData.catchmentArea,
       months_offered: formatArrayToString(clinicData.monthsOffered),
+      date_and_time_of_operation: clinicData.hoursAndDate,
       hours_of_operation: formatArrayToString(clinicData.hoursOfOperation),
       days_of_operation: formatArrayToString(clinicData.daysOfOperation),
       year_round_service: clinicData.yearRoundService,
@@ -75,18 +76,23 @@ exports.createTaxClinic = async (clinicData) => {
       comments: clinicData.comments,
     });
 
+    let locations = [];
     if (clinicData.locations && clinicData.locations.length > 0) {
-      const locations = clinicData.locations.map((loc) => ({
+      const locationData = clinicData.locations.map((loc) => ({
         tax_clinic_id: newClinic.id,
         street: loc.street,
         city: loc.city,
         state: loc.state,
         postal_code: loc.postalCode,
       }));
-      await TaxClinicLocation.bulkCreate(locations);
+      locations = await TaxClinicLocation.bulkCreate(locationData);
     }
 
-    return newClinic;
+    const clinicWithLocations = await TaxClinic.findByPk(newClinic.id, {
+      include: [{ model: TaxClinicLocation, as: "locations" }],
+    });
+
+    return clinicWithLocations;
   } catch (error) {
     console.error("Error creating tax clinic:", error);
     throw new Error("Error creating clinic in the database");
@@ -123,6 +129,7 @@ exports.updateTaxClinic = async (id, clinicData) => {
       serve_people_from: clinicData.serve_people_from,
       catchment_area: clinicData.catchment_area,
       months_offered: formatArrayToString(clinicData.months_offered),
+      date_and_time_of_operation: clinicData.date_and_time_of_operation,
       hours_of_operation: formatArrayToString(clinicData.hours_of_operation),
       days_of_operation: formatArrayToString(clinicData.days_of_operation),
       year_round_service: clinicData.year_round_service,
@@ -148,7 +155,7 @@ exports.updateTaxClinic = async (id, clinicData) => {
       additional_support: formatArrayToString(clinicData.additional_support),
       comments: clinicData.comments,
     });
-
+    
     if (clinicData.locations && clinicData.locations.length > 0) {
       await TaxClinicLocation.destroy({ where: { tax_clinic_id: id } });
 
@@ -162,8 +169,12 @@ exports.updateTaxClinic = async (id, clinicData) => {
 
       await TaxClinicLocation.bulkCreate(locations);
     }
+
+    const updatedClinic = await TaxClinic.findByPk(id, {
+      include: [{ model: TaxClinicLocation, as: "locations" }],
+    });
  
-    return clinic;
+    return updatedClinic;
   } catch (error) {
     throw new Error("Error updating tax clinic in the database");
   }
