@@ -130,6 +130,14 @@ TaxClinic.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    eligibility_criteria_file: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    other_branches: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     booking_process: {
       type: DataTypes.TEXT,
       allowNull: false,
