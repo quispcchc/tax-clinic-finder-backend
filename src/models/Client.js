@@ -11,10 +11,6 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  appointment_type: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   type_of_clinic: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -44,10 +40,6 @@ const Client = sequelize.define('Client', {
     allowNull: true
   },
   population_serve: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  help_access_documents: {
     type: DataTypes.TEXT,
     allowNull: true
   },
