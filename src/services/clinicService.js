@@ -14,7 +14,7 @@ exports.getTaxClinics = async () => {
         {
           model: TaxClinicLocation,
           as: "locations",
-          required: true,
+          required: false,
         },
       ],
     });
