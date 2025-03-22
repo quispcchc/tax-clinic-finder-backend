@@ -31,6 +31,10 @@ const Client = sequelize.define('Client', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  mode_of_service: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   wheelchair_accessible: {
     type: DataTypes.STRING,
     allowNull: true,
