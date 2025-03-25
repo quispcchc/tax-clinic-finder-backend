@@ -76,6 +76,7 @@ exports.createTaxClinic = async (clinicData) => {
       clinic_capacity: clinicData.clinicCapacity,
       additional_support: formatArrayToString(clinicData.additionalSupport),
       comments: clinicData.comments,
+      is_virtual_clinic: clinicData.isVirtualClinic
     });
 
     let locations = [];
@@ -158,20 +159,24 @@ exports.updateTaxClinic = async (id, clinicData) => {
       clinic_capacity: clinicData.clinic_capacity,
       additional_support: formatArrayToString(clinicData.additional_support),
       comments: clinicData.comments,
+      is_virtual_clinic: clinicData.is_virtual_clinic,
     });
     
-    if (clinicData.locations && clinicData.locations.length > 0) {
+    if (clinicData.is_virtual_clinic) {
       await TaxClinicLocation.destroy({ where: { tax_clinic_id: id } });
+    } else if (Array.isArray(clinicData.locations)) {
+      await TaxClinicLocation.destroy({ where: { tax_clinic_id: id } });
+      if (clinicData.locations.length > 0) {
 
-      const locations = clinicData.locations.map((location) => ({
-        tax_clinic_id: id,
-        street: location.street,
-        city: location.city,
-        state: location.state,
-        postal_code: location.postal_code,
-      }));
-
-      await TaxClinicLocation.bulkCreate(locations);
+        const locations = clinicData.locations.map((location) => ({
+          tax_clinic_id: id,
+          street: location.street,
+          city: location.city,
+          state: location.state,
+          postal_code: location.postal_code,
+        }));
+        await TaxClinicLocation.bulkCreate(locations);
+      }
     }
 
     const updatedClinic = await TaxClinic.findByPk(id, {

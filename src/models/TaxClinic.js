@@ -198,6 +198,10 @@ TaxClinic.init(
       type: DataTypes.JSONB,
       allowNull: true,
     },
+    is_virtual_clinic: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
   },
   {
     sequelize,
