@@ -63,7 +63,7 @@ exports.resetPassword = async (email) => {
     if (process.env.NODE_ENV === "development") {
       resetUrl = `http://localhost:4200/reset-password/${resetToken}`;
     } else {
-      resetUrl = `https://frontend-dot-taxclinics-ottawa.nn.r.appspot.com/reset-password/${resetToken}`;
+      resetUrl = `https://taxinics.centre-ebo.com/reset-password/${resetToken}`;
     }
 
     const mailOptions = {
